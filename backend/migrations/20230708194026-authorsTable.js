@@ -13,28 +13,25 @@ const sequelize = new Sequelize({
   host: process.env.DB_HOST
 });
 
-exports.up = async function () {
-  const filePath = path.join(__dirname, 'sqls', '20230708194026-authorsTable-up.sql');
+const executeSqlFile = async (filePath) => {
   try {
     const data = await fs.readFile(filePath, { encoding: 'utf-8' });
-    console.log('received data: ' + data);
+    console.log(`Executing SQL from: ${filePath}`);
     await sequelize.query(data);
   } catch (error) {
-    console.error('Error during migration:', error);
-    throw error; // Lanza el error para que el proceso de migración pueda manejarlo
+    console.error(`Error executing SQL from ${filePath}:`, error);
+    throw error;
   }
+};
+
+exports.up = async function () {
+  const filePath = path.join(__dirname, 'sqls', '20230708194026-authorsTable-up.sql');
+  await executeSqlFile(filePath);
 };
 
 exports.down = async function () {
   const filePath = path.join(__dirname, 'sqls', '20230708194026-authorsTable-down.sql');
-  try {
-    const data = await fs.readFile(filePath, { encoding: 'utf-8' });
-    console.log('received data: ' + data);
-    await sequelize.query(data);
-  } catch (error) {
-    console.error('Error during rollback:', error);
-    throw error; // Lanza el error para que el proceso de migración pueda manejarlo
-  }
+  await executeSqlFile(filePath);
 };
 
 exports._meta = {

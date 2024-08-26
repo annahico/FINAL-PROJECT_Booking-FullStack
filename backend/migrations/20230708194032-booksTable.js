@@ -13,30 +13,25 @@ exports.setup = function (options, seedLink) {
   seed = seedLink;
 };
 
-exports.up = async function (db) {
-  const filePath = path.join(__dirname, 'sqls', '20230708194026-authorsTable-up.sql');
-
+const executeSqlFile = async (db, filePath) => {
   try {
     const data = await fs.readFile(filePath, 'utf-8');
-    console.log('received data: ' + data);
+    console.log(`Executing SQL from: ${filePath}`);
     await db.runSql(data);
   } catch (err) {
-    console.error('Error during migration:', err);
+    console.error(`Error executing SQL from ${filePath}:`, err);
     throw err;
   }
 };
 
+exports.up = async function (db) {
+  const filePath = path.join(__dirname, 'sqls', '20230708194026-authorsTable-up.sql');
+  await executeSqlFile(db, filePath);
+};
+
 exports.down = async function (db) {
   const filePath = path.join(__dirname, 'sqls', '20230708194026-authorsTable-down.sql');
-
-  try {
-    const data = await fs.readFile(filePath, 'utf-8');
-    console.log('received data: ' + data);
-    await db.runSql(data);
-  } catch (err) {
-    console.error('Error during rollback:', err);
-    throw err;
-  }
+  await executeSqlFile(db, filePath);
 };
 
 exports._meta = {

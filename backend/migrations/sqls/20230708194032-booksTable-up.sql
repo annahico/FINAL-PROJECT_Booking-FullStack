@@ -1,53 +1,37 @@
-create table books( 
-
-id int primary key not null AUTO_INCREMENT,
-title varchar(100) not null,
-info text not null,
-imageUrl text not null,
-authorId int not null,
-
-foreign key (authorId) references authors (id)
-
+-- Create the 'books' table
+CREATE TABLE books (
+    id INT AUTO_INCREMENT PRIMARY KEY, -- Primary key with auto-increment
+    title VARCHAR(100) NOT NULL, -- Title of the book
+    info TEXT NOT NULL, -- Description or information about the book
+    imageUrl TEXT NOT NULL, -- URL of the book's cover image
+    authorId INT NOT NULL, -- Foreign key to 'authors' table
+    -- Define foreign key constraint
+    FOREIGN KEY (authorId) REFERENCES authors (id)
 );
 
-insert into
+-- Insert initial data into 'books' table
+INSERT INTO
     books (
         title,
         info,
         imageUrl,
         authorId
     )
-values (
-        "MongoDB in Action, 2nd Edition",
-        "This Book illustrates Mongodb including examples,practice exams",
-        "https://itbook.store/img/books/9781617291609.png",
+VALUES (
+        'MongoDB in Action, 2nd Edition',
+        'This book illustrates MongoDB, including examples and practice exams.',
+        'https://itbook.store/img/books/9781617291609.png',
         2
-    );
-
-insert into
-    books (
-        title,
-        info,
-        imageUrl,
-        authorId
-    )
-values (
-        "A complete guide to dealing with Big Data using MongoDB",
-        "This Book illustrates Mongodb in Big data field including examples,practice exams",
-        "https://itbook.store/img/books/9781484211830.png",
+    ),
+    (
+        'A Complete Guide to Dealing with Big Data Using MongoDB',
+        'This book covers MongoDB in the context of big data, including examples and practice exams.',
+        'https://itbook.store/img/books/9781484211830.png',
         1
-    );
-
-insert into
-    books (
-        title,
-        info,
-        imageUrl,
-        authorId
-    )
-values (
-        "Practical MongoDB",
-        "This book is concerned with problem solving with mongodb,and practice exams",
-        "https://itbook.store/img/books/9781484206485.png",
+    ),
+    (
+        'Practical MongoDB',
+        'This book focuses on problem-solving with MongoDB and includes practice exams.',
+        'https://itbook.store/img/books/9781484206485.png',
         2
     );
