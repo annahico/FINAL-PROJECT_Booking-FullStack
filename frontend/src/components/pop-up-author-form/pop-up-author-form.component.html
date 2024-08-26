@@ -1,0 +1,19 @@
+<div class="dialog" *ngIf="showDialog">
+    <form>
+        <h3>Author Name</h3>
+        <input type="text" [(ngModel)]="author.fullName" name="authorName" id="AuthorName"
+            placeholder="enter author name">
+        <h3>Author Image</h3>
+        <input type="text" [(ngModel)]="author.authorImageUrl" name="authorImage" id="authorImage"
+            placeholder="enter author image">
+        <h3>Author Email</h3>
+        <input type="text" [(ngModel)]="author.email" name="authorEmail" id="authorEmail"
+            placeholder="enter author email">
+        <h3>Author Bio</h3>
+        <textarea name="Author Bio" [(ngModel)]="author.bio" id="authorBio" cols="30" rows="10"
+            placeholder="enter author bio"></textarea>
+        <div>
+        </div>
+        <button (click)="addAuthor()">Add Author</button>
+    </form>
+</div>
