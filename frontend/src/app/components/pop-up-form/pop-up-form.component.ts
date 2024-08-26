@@ -9,9 +9,6 @@ import { BookService } from 'src/app/services/book-service.service';
   styleUrls: ['./pop-up-form.component.css']
 })
 export class PopUpFormComponent implements OnInit {
-
-
-
   public authors:Author[]=[];
   @Input() showDialog:boolean=false;
   @Output() createBookEvent:EventEmitter<Book> =new EventEmitter();
@@ -29,46 +26,23 @@ export class PopUpFormComponent implements OnInit {
       id: 0,
       authorImageUrl:''
     }
-    
-  };
-
+      };
   constructor(private bookService:BookService,private authorService:AuthorService) { }
-
-
-
   ngOnInit(): void {
-
     this.authorService.getAuthors().subscribe((result)=>{
-
-    
       this.authors=result;
     })
-
-
-
-
-
   }
 
   addBook(){
-    
-
-      console.log(this.newBook);
-    
-      this.newBook.author =this.authors.find((author)=>author.id===this.newBook.authorId)!;
-
+          console.log(this.newBook);
+          this.newBook.author =this.authors.find((author)=>author.id===this.newBook.authorId)!;
       this.bookService.addBook(this.newBook).subscribe((result)=>{
-
         if(result.body.id){
         console.log(result.body.id);
         this.newBook.id=result.body.id;
        this.createBookEvent.emit(this.newBook);
-       
-    }
-
+                  }
       });
-
-
   }
-
 }
