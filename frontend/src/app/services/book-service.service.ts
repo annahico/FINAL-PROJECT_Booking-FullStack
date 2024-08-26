@@ -1,10 +1,11 @@
+// book.service.ts
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Book } from '../models/book';
 
 @Injectable({
-  providedIn: 'root' 
+  providedIn: 'root'
 })
 export class BookService {
   public selectedBookForDetails!: Book;

@@ -1,3 +1,4 @@
+// author.service.ts
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -7,20 +8,22 @@ import { Author } from '../models/author';
   providedIn: 'root'
 })
 export class AuthorService {
-  public selectedAuthor!:Author;
-  private baseUrl:string="http://localhost:4000/bookStore/authors/"
-  private authors:Author[]=[]; 
-  private headers= { 'content-type': 'application/json'}
-  constructor(private http:HttpClient) { }
+  public selectedAuthor!: Author;
+  private baseUrl: string = "http://localhost:4000/bookStore/authors/";
+  private headers = { 'content-type': 'application/json' };
 
-  getAuthors():Observable<Author[]>{
+  constructor(private http: HttpClient) { }
+
+  getAuthors(): Observable<Author[]> {
     return this.http.get<Author[]>(this.baseUrl);
   }
-  addAuthor(author:Author):Observable<any>{
-    let body=JSON.stringify(author); 
-    return this.http.post<any>(this.baseUrl, body, {headers:this.headers,observe:'response'});
+
+  addAuthor(author: Author): Observable<any> {
+    const body = JSON.stringify(author);
+    return this.http.post<any>(this.baseUrl, body, { headers: this.headers, observe: 'response' });
   }
-  deleteAuthor(id:number):Observable<any>{
-    return this.http.delete(this.baseUrl+id);
+
+  deleteAuthor(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}${id}`);
   }
 }
