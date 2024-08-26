@@ -1,0 +1,11 @@
+<app-app-header (bookFilterEvent)="onSearching($event)"></app-app-header>
+<app-pop-up-author-form (createAuthorEvent)="addAuthor($event)" [showDialog]="showDialog"> </app-pop-up-author-form>
+<div class="parent">
+    <div class="container">
+        <app-author-item (deleteAuthorEvent)="deleteAuthor($event)" *ngFor="let author of filteredAuthors"
+            [author]="author"> </app-author-item>
+    </div>
+    <button (click)="toggleDialog()">
+        +
+    </button>
+</div>
