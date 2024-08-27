@@ -1,9 +1,0 @@
-<app-app-header (bookFilterEvent)="filterBooks($event)"></app-app-header>
-<div class="container">
-    <div *ngIf="books.length>0" class="booksArea">
-        <app-book-item *ngFor="let book of filteredBooks" [book]="book"
-            (deleteEvent)="deleteBook($event)"></app-book-item>
-    </div>
-</div>
-<app-pop-up-form (createBookEvent)="addBook($event)" [showDialog]="showDialog"></app-pop-up-form>
-<button (click)="togglePopUpForm()" class="add">+</button>
