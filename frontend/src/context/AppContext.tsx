@@ -1,30 +1,27 @@
+/* eslint-disable react-refresh/only-export-components */
 import { loadStripe, Stripe } from "@stripe/stripe-js";
-import React, { createContext, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useQuery } from "react-query";
 import * as apiClient from "../api-client";
 import Toast from "../components/Toast";
 
-// Define el tipo de mensaje de toast
+const STRIPE_PUB_KEY = import.meta.env.VITE_STRIPE_PUB_KEY || "";
+
 type ToastMessage = {
   message: string;
   type: "SUCCESS" | "ERROR";
 };
 
-// Define el tipo del contexto
-type AppContextType = {
+type AppContext = {
   showToast: (toastMessage: ToastMessage) => void;
   isLoggedIn: boolean;
   stripePromise: Promise<Stripe | null>;
 };
 
-// Crea el contexto con un valor por defecto de `undefined`
-const AppContext = createContext<AppContextType | undefined>(undefined);
+const AppContext = React.createContext<AppContext | undefined>(undefined);
 
-// Carga la clave pública de Stripe
-const STRIPE_PUB_KEY = import.meta.env.VITE_STRIPE_PUB_KEY || "";
 const stripePromise = loadStripe(STRIPE_PUB_KEY);
 
-// Proveedor del contexto
 export const AppContextProvider = ({
   children,
 }: {
@@ -58,11 +55,7 @@ export const AppContextProvider = ({
   );
 };
 
-// Hook para usar el contexto
 export const useAppContext = () => {
   const context = useContext(AppContext);
-  if (context === undefined) {
-    throw new Error("useAppContext must be used within an AppContextProvider");
-  }
-  return context;
+  return context as AppContext;
 };
