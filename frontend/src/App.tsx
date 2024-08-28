@@ -18,15 +18,7 @@ import Search from "./pages/Search";
 import SignIn from "./pages/SignIn";
 
 const App = () => {
-  const context = useAppContext();
-
-  if (!context) {
-    // El contexto no está disponible, manejar el error aquí si es necesario
-    return <div>Error: El contexto no está disponible</div>;
-  }
-
-  const { isLoggedIn } = context;
-
+  const { isLoggedIn } = useAppContext();
   return (
     <Router>
       <Routes>
@@ -81,6 +73,7 @@ const App = () => {
                 </Layout>
               }
             />
+
             <Route
               path="/add-hotel"
               element={

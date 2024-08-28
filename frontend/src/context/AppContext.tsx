@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import { loadStripe, Stripe } from "@stripe/stripe-js";
 import React, { useContext, useState } from "react";
 import { useQuery } from "react-query";
