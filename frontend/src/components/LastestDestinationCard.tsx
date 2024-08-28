@@ -14,7 +14,6 @@ const LatestDestinationCard = ({ hotel }: Props) => {
       <div className="h-[300px]">
         <img
           src={hotel.imageUrls[0]}
-          alt={hotel.name}
           className="w-full h-full object-cover object-center"
         />
       </div>
