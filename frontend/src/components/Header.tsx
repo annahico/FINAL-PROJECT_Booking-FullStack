@@ -9,7 +9,7 @@ const Header = () => {
     <header className="bg-blue-800 py-6">
       <div className="container mx-auto flex justify-between items-center">
         <h1 className="text-3xl text-white font-bold tracking-tight">
-          <Link to="/">Book My Hotel</Link>
+          <Link to="/">Book your Hotel</Link>
         </h1>
         <nav className="flex space-x-4">
           {isLoggedIn ? (
