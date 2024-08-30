@@ -55,7 +55,7 @@ router.post(
       // Generar un token JWT
       const token = jwt.sign(
         { userId: user.id },
-        process.env.JWT_SECRET_KEY as string, //siempre hay que poner la clave en .env OR || poner string secreto
+        process.env.JWT_SECRET_KEY as string, //siempre hay que poner la clave en .env para que funcione OR || poner string secreto
         { expiresIn: "1d" }
       );
 
