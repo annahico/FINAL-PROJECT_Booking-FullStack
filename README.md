@@ -63,6 +63,7 @@ Este proyecto es un sitio web de reservas de hoteles desarrollado con la pila ME
 ## Contribuciones:
 
 Se aceptan contribuciones. Por favor, bifurque el repositorio y cree una solicitud de incorporación de cambios para cualquier mejora o corrección.
+
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Book My Hotel
