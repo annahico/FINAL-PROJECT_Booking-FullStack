@@ -1,3 +1,71 @@
+CAST / ENG
+
+# Book My Hotel
+
+Este proyecto es un sitio web de reservas de hoteles desarrollado con la pila MERN (MongoDB, Express.js, React.js, Node.js). Permite a los usuarios buscar hoteles, ver detalles y hacer reservas.
+
+## Características
+
+- **Autenticación de usuarios:** Funcionalidades de registro e inicio de sesión para usuarios.
+- **Búsqueda de hoteles:** Busque hoteles según ubicación, fecha y otros filtros.
+- **Gestión de reservas:** Vea el historial de reservas y administre las reservas actuales.
+- **Panel de administración:** Panel de administración para administrar hoteles, reservas y usuarios.
+<!-- - **Cargas de imágenes:** Integración con Cloudinary para cargar y administrar imágenes de hoteles. -->
+- **Diseño adaptable:** Interfaz compatible con dispositivos móviles para una experiencia de usuario perfecta.
+  
+## Tecnologías utilizadas
+
+- **Frontend:** React.js, HTML/CSS, Bootstrap (or any other UI framework)
+- **Backend:** Node.js, Express.js
+- **Database:** MongoDB
+- **Image Uploads:** Cloudinary
+
+## Instalación
+
+1. Clonar el repositorio:
+
+   ```bash
+   git clone https://github.com/annahico/FINAL-PROJECT_Booking-FullStack
+   ```
+
+2. Instalar dependencias:
+
+   ```bash
+   cd frontend
+   npm install
+   cd ../backend
+   npm install
+   ```
+
+3. Configurar variables de entorno:
+
+ - Cree un archivo `.env` en el directorio `backend`.
+- Agregue las siguientes variables de entorno:
+- URI de MongoDB
+- Secreto de JWT
+- Credenciales de Cloudinary (nombre de la nube, clave de API, secreto de API)
+- Cualquier otra variable necesaria
+
+4. Iniciar el servidor backend:
+
+   ```bash
+   cd backend
+   npm run dev
+   ```
+
+5. Inicie el servidor de desarrollo frontend:
+
+   ```bash
+   cd frontend
+   npm run dev
+   ```
+
+## Contribuciones:
+
+Se aceptan contribuciones. Por favor, bifurque el repositorio y cree una solicitud de incorporación de cambios para cualquier mejora o corrección.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 # Book My Hotel
 
 This project is a hotel booking website developed using the MERN stack (MongoDB, Express.js, React.js, Node.js). It allows users to search for hotels, view details, and make bookings.
@@ -17,7 +85,6 @@ This project is a hotel booking website developed using the MERN stack (MongoDB,
 - **Backend:** Node.js, Express.js
 - **Database:** MongoDB
 - **Image Uploads:** Cloudinary
-- **Testing:** Playwright (for end-to-end testing)
 
 ## Installation
 
@@ -58,16 +125,6 @@ This project is a hotel booking website developed using the MERN stack (MongoDB,
    cd frontend
    npm run dev
    ```
-
-<!-- ## Testing
-
-- End-to-end tests are implemented using Playwright.
-- Run tests using the following command: -->
-
-<!-- ```bash
-cd e2e-tests
-npx playwright test
-``` -->
 
 ## Contributing
 
