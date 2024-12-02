@@ -12,7 +12,7 @@ Este proyecto es un sitio web de reservas de hoteles desarrollado con la pila ME
 - **Panel de administración:** Panel de administración para administrar hoteles, reservas y usuarios.
 <!-- - **Cargas de imágenes:** Integración con Cloudinary para cargar y administrar imágenes de hoteles. -->
 - **Diseño adaptable:** Interfaz compatible con dispositivos móviles para una experiencia de usuario perfecta.
-  
+
 ## Tecnologías utilizadas
 
 - **Frontend:** React.js, HTML/CSS, Bootstrap (or any other UI framework)
@@ -39,7 +39,7 @@ Este proyecto es un sitio web de reservas de hoteles desarrollado con la pila ME
 
 3. Configurar variables de entorno:
 
- - Cree un archivo `.env` en el directorio `backend`.
+- Cree un archivo `.env` en el directorio `backend`.
 - Agregue las siguientes variables de entorno:
 - URI de MongoDB
 - Secreto de JWT
@@ -64,7 +64,7 @@ Este proyecto es un sitio web de reservas de hoteles desarrollado con la pila ME
 
 Se aceptan contribuciones. Por favor, bifurque el repositorio y cree una solicitud de incorporación de cambios para cualquier mejora o corrección.
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 # Book My Hotel
 
