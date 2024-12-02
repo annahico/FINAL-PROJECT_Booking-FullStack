@@ -2,127 +2,104 @@ CAST / ENG
 
 # Book My Hotel
 
-Este proyecto es un sitio web de reservas de hoteles desarrollado con la pila MERN (MongoDB, Express.js, React.js, Node.js). Permite a los usuarios buscar hoteles, ver detalles y hacer reservas.
+Este es el **frontend** del proyecto **Book My Hotel**, una plataforma de reservas de hoteles desarrollada con la pila MERN (MongoDB, Express.js, React.js, Node.js). El frontend está creado con **React.js** y estilizado con **Tailwind CSS** para ofrecer una interfaz adaptable y fácil de usar.
 
 ## Características
 
-- **Autenticación de usuarios:** Funcionalidades de registro e inicio de sesión para usuarios.
+- **Diseño Adaptable:** Funcionalidades de registro e inicio de sesión para usuarios.
 - **Búsqueda de hoteles:** Busque hoteles según ubicación, fecha y otros filtros.
 - **Gestión de reservas:** Vea el historial de reservas y administre las reservas actuales.
 - **Panel de administración:** Panel de administración para administrar hoteles, reservas y usuarios.
-<!-- - **Cargas de imágenes:** Integración con Cloudinary para cargar y administrar imágenes de hoteles. -->
-- **Diseño adaptable:** Interfaz compatible con dispositivos móviles para una experiencia de usuario perfecta.
+- **Integración con Backend:** Comunicación con la API del backend para el manejo de datos.
 
 ## Tecnologías utilizadas
 
 - **Frontend:** React.js, HTML/CSS, Bootstrap (or any other UI framework)
-- **Backend:** Node.js, Express.js
-- **Database:** MongoDB
-- **Image Uploads:** Cloudinary
+- **Enrutamiento:** React Router
+- **Gestión de Estado:** Context API o Redux (si aplica)
+- **Comunicación con API:** Axios
+- **Herramienta de Construcción:** Vite
 
 ## Instalación
 
 1. Clonar el repositorio:
 
    ```bash
-   git clone https://github.com/annahico/FINAL-PROJECT_Booking-FullStack
+   git clone https://github.com/annahico/FINAL-PROJECT_Booking_Frontend.git
+   cd FINAL-PROJECT_Booking_Frontend
    ```
 
 2. Instalar dependencias:
 
    ```bash
-   cd frontend
-   npm install
-   cd ../backend
    npm install
    ```
 
 3. Configurar variables de entorno:
 
-- Cree un archivo `.env` en el directorio `backend`.
-- Agregue las siguientes variables de entorno:
-- URI de MongoDB
-- Secreto de JWT
-- Credenciales de Cloudinary (nombre de la nube, clave de API, secreto de API)
-- Cualquier otra variable necesaria
+- Cree un archivo `.env` en el directorio raíz.
+- Agregue la siguiente variable de entorno:
+- VITE_API_BASE_URL=http://localhost:5000 # URL de la API del backend
 
-4. Iniciar el servidor backend:
+4. Inicie el servidor de desarrollo
 
    ```bash
-   cd backend
-   npm run dev
-   ```
-
-5. Inicie el servidor de desarrollo frontend:
-
-   ```bash
-   cd frontend
    npm run dev
    ```
 
 ## Contribuciones:
 
-Se aceptan contribuciones. Por favor, bifurque el repositorio y cree una solicitud de incorporación de cambios para cualquier mejora o corrección.
+Se aceptan contribuciones. Por favor, haga un fork del repositorio y cree una solicitud de incorporación de cambios para cualquier mejora o corrección.
 
 ---
 
 # Book My Hotel
 
-This project is a hotel booking website developed using the MERN stack (MongoDB, Express.js, React.js, Node.js). It allows users to search for hotels, view details, and make bookings.
+This is the **frontend** of the **Book My Hotel** project, a hotel booking platform built using the MERN stack (MongoDB, Express.js, React.js, Node.js). The frontend is developed with **React.js** and styled with **Tailwind CSS** to provide a user-friendly and responsive interface.
+
+---
 
 ## Features
 
-- **User Authentication:** Register and login functionalities for users.
-- **Hotel Search:** Search for hotels based on location, date, and other filters.
-- **Booking Management:** View booking history and manage current bookings.
-- **Admin Panel:** Admin dashboard to manage hotels, bookings, and users.
-<!-- - **Image Uploads:** Integration with Cloudinary for uploading and managing hotel images. -->
-- **Responsive Design:** Mobile-friendly interface for seamless user experience.
+- **Responsive Design**: A mobile-first, adaptive interface for seamless user experience across devices.
+- **Hotel Search**: Search for hotels using filters like location, date, and preferences.
+- **Booking Management**: View and manage current bookings and booking history.
+- **Admin Panel**: Manage users, hotels, and reservations (requires admin login).
+- **Integration with Backend**: Communicates with the backend API for data handling.
 
 ## Technologies Used
 
-- **Frontend:** React.js, HTML/CSS, Bootstrap (or any other UI framework)
-- **Backend:** Node.js, Express.js
-- **Database:** MongoDB
-- **Image Uploads:** Cloudinary
+- **Frontend Framework**: React.js
+- **Styling**: Tailwind CSS
+- **Routing**: React Router
+- **State Management**: Context API or Redux (if applicable)
+- **API Communication**: Axios
+- **Build Tool**: Vite
 
 ## Installation
 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/annahico/FINAL-PROJECT_Booking-FullStack
+   git clone https://github.com/annahico/FINAL-PROJECT_Booking_Frontend
+   cd FINAL-PROJECT_Booking_Frontend
    ```
 
 2. Install dependencies:
 
    ```bash
-   cd frontend
-   npm install
-   cd ../backend
    npm install
    ```
 
 3. Set up environment variables:
 
    - Create a `.env` file in the `backend` directory.
-   - Add the following environment variables:
-     - MongoDB URI
-     - JWT secret
-     - Cloudinary credentials (cloud name, API key, API secret)
-     - Any other necessary variables
+   - Add the following environment variable:
+     VITE_API_BASE_URL=http://localhost:5000 # Backend API URL
 
-4. Start the backend server:
+4. Start the frontend development server:
 
    ```bash
-   cd backend
-   npm run dev
-   ```
-
-5. Start the frontend development server:
-
-   ```bash
-   cd frontend
    npm run dev
    ```
 
