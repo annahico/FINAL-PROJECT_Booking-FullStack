@@ -1,56 +1,51 @@
-import { loadStripe, Stripe } from "@stripe/stripe-js";
-import React, { useContext, useState } from "react";
-import { useQuery } from "react-query";
-import * as apiClient from "../apiClient";
-import Toast from "../components/Toast";
+import { HotelType } from "../apiClient";
 
-const STRIPE_PUB_KEY = import.meta.env.VITE_STRIPE_PUB_KEY || "";
-
-type ToastMessage = {
-  message: string;
-  type: "SUCCESS" | "ERROR";
-};
-type AppContext = {
-  showToast: (toastMessage: ToastMessage) => void;
-  isLoggedIn: boolean;
-  stripePromise: Promise<Stripe | null>;
+type Props = {
+  checkIn: Date;
+  checkOut: Date;
+  adultCount: number;
+  childCount: number;
+  numberOfNights: number;
+  hotel: HotelType;
 };
 
-const AppContext = React.createContext<AppContext | undefined>(undefined);
-const stripePromise = loadStripe(STRIPE_PUB_KEY);
-
-export const AppContextProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
-  const [toast, setToast] = useState<ToastMessage | undefined>(undefined);
-  const { isError } = useQuery("validateToken", apiClient.validateToken, {
-    retry: false,
-  });
+const BookingDetailSummary = ({
+  checkIn,
+  checkOut,
+  adultCount,
+  childCount,
+  numberOfNights,
+  hotel,
+}: Props) => {
   return (
-    <AppContext.Provider
-      value={{
-        showToast: (toastMessage) => {
-          setToast(toastMessage);
-        },
-        isLoggedIn: !isError,
-        stripePromise,
-      }}
-    >
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(undefined)}
-        />
-      )}
-      {children}
-    </AppContext.Provider>
+    <div className="grid gap-4 rounded-lg border border-slate-300 p-5 h-fit">
+      <h2 className="text-xl font-bold">Your Booking Details</h2>
+      <div className="border-b py-2">
+        Location:{" "}
+        <p className="font-bold">{`${hotel.name}, ${hotel.city}, ${hotel.country}`}</p>
+      </div>
+      <div className="flex justify-between">
+        <div>
+          Check-In
+          <p className="font-bold">{checkIn.toDateString()}</p>
+        </div>
+        <div>
+          Check-Out
+          <p className="font-bold">{checkOut.toDateString()}</p>
+        </div>
+      </div>
+      <div className="border-t border-b py-2">
+        Total length of stay:
+        <p className="font-bold">{numberOfNights} nights</p>
+      </div>
+      <div>
+        Guests
+        <div className="font-bold">
+          {adultCount} adults & {childCount} children
+        </div>
+      </div>
+    </div>
   );
 };
 
-export const useAppContext = () => {
-  const context = useContext(AppContext);
-  return context as AppContext;
-};
+export default BookingDetailSummary;

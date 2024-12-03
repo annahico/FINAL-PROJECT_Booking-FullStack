@@ -1,8 +1,8 @@
-import DatePicker from "react-datepicker";
+import ReactDatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAppContext } from "../../context/AppContext";
-import { useSearchContext } from "../../context/SearchContext";
+import { useAppContext } from "../context/AppContext";
+import { useSearchContext } from "../context/SearchContext";
 
 type Props = {
   hotelId: string;
@@ -17,11 +17,10 @@ type GuestInfoFormData = {
 };
 
 const GuestInfoForm = ({ hotelId, pricePerNight }: Props) => {
-  const search = useSearchContext();
-  const { isLoggedIn } = useAppContext();
   const navigate = useNavigate();
   const location = useLocation();
-
+  const search = useSearchContext();
+  const { isLoggedIn } = useAppContext();
   const {
     watch,
     register,
@@ -44,17 +43,7 @@ const GuestInfoForm = ({ hotelId, pricePerNight }: Props) => {
   const maxDate = new Date();
   maxDate.setFullYear(maxDate.getFullYear() + 1);
 
-  const handleSignInClick = (data: GuestInfoFormData) => {
-    saveSearchValues(data);
-    navigate("/sign-in", { state: { from: location } });
-  };
-
-  const handleFormSubmit = (data: GuestInfoFormData) => {
-    saveSearchValues(data);
-    navigate(`/hotel/${hotelId}/booking`);
-  };
-
-  const saveSearchValues = (data: GuestInfoFormData) => {
+  const onSighInClick = (data: GuestInfoFormData) => {
     search.saveSearchValues(
       "",
       data.checkIn,
@@ -62,19 +51,31 @@ const GuestInfoForm = ({ hotelId, pricePerNight }: Props) => {
       data.adultCount,
       data.childCount
     );
+    navigate("/sign-in", { state: { form: location } });
   };
 
+  const onSubmit = (data: GuestInfoFormData) => {
+    search.saveSearchValues(
+      "",
+      data.checkIn,
+      data.checkOut,
+      data.adultCount,
+      data.childCount
+    );
+    navigate(`/hotel/${hotelId}/booking`);
+  };
   return (
-    <div className="flex flex-col p-4 bg-blue-200 gap-4">
-      <h3 className="text-md font-bold">£{pricePerNight}</h3>
+    <div className="flex-flex-col p-4 bg-blue-200">
+      <h3 className="text-lg font-bold mb-4">${pricePerNight} Per Night</h3>
       <form
-        onSubmit={handleSubmit(
-          isLoggedIn ? handleFormSubmit : handleSignInClick
-        )}
+        onSubmit={
+          isLoggedIn ? handleSubmit(onSubmit) : handleSubmit(onSighInClick)
+        }
       >
         <div className="grid grid-cols-1 gap-4 items-center">
           <div>
-            <DatePicker
+            <span>Check In</span>
+            <ReactDatePicker
               required
               selected={checkIn}
               onChange={(date) => setValue("checkIn", date as Date)}
@@ -83,49 +84,53 @@ const GuestInfoForm = ({ hotelId, pricePerNight }: Props) => {
               endDate={checkOut}
               minDate={minDate}
               maxDate={maxDate}
-              placeholderText="Check-in Date"
-              className="min-w-full bg-white p-2 focus:outline-none"
+              placeholderText="Check-In Date"
+              className="min-w-full bg-white p-2 focus:outline-none rounded"
               wrapperClassName="min-w-full"
             />
           </div>
+
           <div>
-            <DatePicker
+            <span>Check Out</span>
+            <ReactDatePicker
               required
               selected={checkOut}
               onChange={(date) => setValue("checkOut", date as Date)}
-              selectsEnd
+              selectsStart
               startDate={checkIn}
               endDate={checkOut}
               minDate={minDate}
               maxDate={maxDate}
-              placeholderText="Check-out Date"
-              className="min-w-full bg-white p-2 focus:outline-none"
+              placeholderText="Check-Out Date"
+              className="min-w-full bg-white p-2 focus:outline-none rounded"
               wrapperClassName="min-w-full"
             />
           </div>
-          <div className="flex bg-white px-2 py-1 gap-2">
+
+          <div className="flex bg-white px-2 py-1 gap-2 rounded">
             <label className="items-center flex">
               Adults:
               <input
-                className="w-full p-1 focus:outline-none font-bold"
                 type="number"
+                className="w-full p-1 focus:outline-none font-bold"
                 min={1}
                 max={20}
                 {...register("adultCount", {
                   required: "This field is required",
                   min: {
                     value: 1,
-                    message: "There must be at least one adult",
+                    message: "There must be at least on adult",
                   },
                   valueAsNumber: true,
                 })}
               />
             </label>
+
             <label className="items-center flex">
               Children:
               <input
-                className="w-full p-1 focus:outline-none font-bold"
                 type="number"
+                className="w-full p-1 focus:outline-none font-bold"
                 min={0}
                 max={20}
                 {...register("childCount", {
@@ -139,9 +144,15 @@ const GuestInfoForm = ({ hotelId, pricePerNight }: Props) => {
               </span>
             )}
           </div>
-          <button className="bg-blue-600 text-white h-full p-2 font-bold hover:bg-blue-500 text-xl">
-            {isLoggedIn ? "Book Now" : "Sign in to Book"}
-          </button>
+          {isLoggedIn ? (
+            <button className="bg-blue-600 text-white h-full p-2 font-bold hover:bg-blue-400 text-xl">
+              Book Now
+            </button>
+          ) : (
+            <button className="bg-blue-600 text-white h-full p-2 font-bold hover:bg-blue-400 text-xl">
+              Sign in to Book
+            </button>
+          )}
         </div>
       </form>
     </div>

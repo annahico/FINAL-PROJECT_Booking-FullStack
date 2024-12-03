@@ -6,7 +6,6 @@ const GuestsSection = () => {
     register,
     formState: { errors },
   } = useFormContext<HotelFormData>();
-
   return (
     <div>
       <h2 className="text-2xl font-bold mb-3">Guests</h2>
@@ -15,8 +14,8 @@ const GuestsSection = () => {
           Adults
           <input
             type="number"
-            min={1}
             className="border rounded w-full py-2 px-3 font-normal"
+            min={1}
             {...register("adultCount", {
               required: "This field is required",
             })}
@@ -27,12 +26,13 @@ const GuestsSection = () => {
             </span>
           )}
         </label>
+
         <label className="text-gray-700 text-sm font-semibold">
           Children
           <input
             type="number"
-            min={0}
             className="border rounded w-full py-2 px-3 font-normal"
+            min={0}
             {...register("childCount", {
               required: "This field is required",
             })}

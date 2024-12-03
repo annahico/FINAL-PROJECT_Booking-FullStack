@@ -16,11 +16,11 @@ type SearchContext = {
   ) => void;
 };
 
-const SearchContext = React.createContext<SearchContext | undefined>(undefined);
-
 type SearchContextProviderProps = {
   children: React.ReactNode;
 };
+
+const SearchContext = React.createContext<SearchContext | undefined>(undefined);
 
 export const SearchContextProvider = ({
   children,
@@ -40,10 +40,10 @@ export const SearchContextProvider = ({
     parseInt(sessionStorage.getItem("adultCount") || "1")
   );
   const [childCount, setChildCount] = useState<number>(() =>
-    parseInt(sessionStorage.getItem("childCount") || "1")
+    parseInt(sessionStorage.getItem("childCount") || "0")
   );
   const [hotelId, setHotelId] = useState<string>(
-    () => sessionStorage.getItem("hotelID") || ""
+    () => sessionStorage.getItem("hotelId") || ""
   );
 
   const saveSearchValues = (
@@ -68,12 +68,10 @@ export const SearchContextProvider = ({
     sessionStorage.setItem("checkOut", checkOut.toISOString());
     sessionStorage.setItem("adultCount", adultCount.toString());
     sessionStorage.setItem("childCount", childCount.toString());
-
     if (hotelId) {
       sessionStorage.setItem("hotelId", hotelId);
     }
   };
-
   return (
     <SearchContext.Provider
       value={{

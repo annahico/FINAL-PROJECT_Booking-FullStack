@@ -1,25 +1,26 @@
 import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
 import * as apiClient from "../apiClient";
 import { useAppContext } from "../context/AppContext";
 import ManageHotelForm from "../forms/ManageHotelForm/ManageHotelForm";
 
 const AddHotel = () => {
+  const navigate = useNavigate();
   const { showToast } = useAppContext();
-
-  const mutation = useMutation(apiClient.addMyHotel, {
+  const { mutate, isLoading } = useMutation(apiClient.addMyHotel, {
     onSuccess: () => {
-      showToast({ message: "Hotel Saved!", type: "SUCCESS" });
+      showToast({ message: "New Hotel added!", type: "SUCCESS" });
     },
     onError: () => {
-      showToast({ message: "Error Saving Hotel", type: "ERROR" });
+      showToast({ message: "Error adding new Hotel!", type: "ERROR" });
     },
   });
 
   const handleSave = (hotelFormData: FormData) => {
-    mutation.mutate(hotelFormData);
+    mutate(hotelFormData);
+    navigate("/my-hotels");
   };
-
-  return <ManageHotelForm onSave={handleSave} isLoading={mutation.isLoading} />;
+  return <ManageHotelForm onSave={handleSave} isLoading={isLoading} />;
 };
 
 export default AddHotel;

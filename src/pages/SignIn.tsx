@@ -1,92 +1,132 @@
-import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "react-query";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useQuery } from "react-query";
 import * as apiClient from "../apiClient";
-import { useAppContext } from "../context/AppContext";
+import FacilitiesFilter from "../components/FacilitiesFilter";
+import HotelTypesFilter from "../components/HotelTypesFilter";
+import Pagination from "../components/Pagination";
+import PriceFilter from "../components/PriceFilter";
+import SearchResultCard from "../components/SearchResultsCard";
+import StarRatingFilter from "../components/StarRatingFilter";
+import { useSearchContext } from "../context/SearchContext";
 
-export type SignInFormDate = {
-  email: string;
-  password: string;
-};
+const Search = () => {
+  const search = useSearchContext();
+  const [page, setPage] = useState<number>(1);
+  const [selectedStars, setSelectedStars] = useState<string[]>([]);
+  const [selectedHotelTypes, setSelectedHotelTypes] = useState<string[]>([]);
+  const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
+  const [selectedPrice, setSelectedPrice] = useState<number | undefined>();
+  const [sortOption, setSortOption] = useState<string>("");
 
-const SignIn = () => {
-  const location = useLocation();
-  const queryClient = useQueryClient();
-  const { showToast } = useAppContext();
-  const navigate = useNavigate();
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm<SignInFormDate>();
+  const searchParams = {
+    destination: search.destination,
+    checkIn: search.checkIn.toISOString(),
+    checkOut: search.checkOut.toISOString(),
+    adultCount: search.adultCount.toString(),
+    childCount: search.childCount.toString(),
+    page: page.toString(),
+    stars: selectedStars,
+    types: selectedHotelTypes,
+    facilities: selectedFacilities,
+    maxPrice: selectedPrice?.toString(),
+    sortOption,
+  };
+  const { data: hotelData } = useQuery(["searchHotels", searchParams], () =>
+    apiClient.searchHotels(searchParams)
+  );
 
-  const mutation = useMutation(apiClient.signIn, {
-    onSuccess: async () => {
-      // 1. show the toast
-      showToast({ message: "Logged In", type: "SUCCESS" });
-      await queryClient.invalidateQueries("validateToken");
-      // 2. navigate to the home page
-      // location state saved the previous location and if it is there it will redirect to that page
-      navigate(location.state?.from?.pathname || "/");
-    },
-    onError: (error: Error) => {
-      // show the toast
-      showToast({ message: error.message, type: "ERROR" });
-    },
-  });
+  const handleStarsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const starRating = event.target.value;
+    setSelectedStars((prevStars) =>
+      event.target.checked
+        ? [...prevStars, starRating]
+        : prevStars.filter((star) => star !== starRating)
+    );
+  };
 
-  const onSubmit = handleSubmit((data) => {
-    mutation.mutate(data);
-  });
+  const handleHotelTypeChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const hotelType = event.target.value;
+    setSelectedHotelTypes((prevHotelTypes) =>
+      event.target.checked
+        ? [...prevHotelTypes, hotelType]
+        : prevHotelTypes.filter((type) => type !== hotelType)
+    );
+  };
+
+  const handleFacilityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const facility = event.target.value;
+    setSelectedFacilities((prevFacilities) =>
+      event.target.checked
+        ? [...prevFacilities, facility]
+        : prevFacilities.filter((prevFacility) => prevFacility !== facility)
+    );
+  };
 
   return (
-    <form className="flex flex-col gap-5" onSubmit={onSubmit}>
-      <h2 className="text-3xl font-bold">Sign In</h2>
-      <label className="text-gray-700 text-sm font-bold w-full md:w-1/2">
-        Email
-        <input
-          type="email"
-          className="border rounded w-full py-1 px-2 font-normal"
-          {...register("email", { required: "This field is required" })}
-        />
-        {errors.email && (
-          <span className="text-red-500">{errors.email.message}</span>
-        )}
-      </label>
+    <div className="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-5">
+      <div className="rounded-lg border border-slate-300 p-5 h-fit sticky top-10">
+        <div className="space-y-5">
+          <h3 className="text-lg font-semibold border-b border-slate-300 pb-5">
+            Filter By:
+          </h3>
+          <StarRatingFilter
+            selectedStars={selectedStars}
+            onChange={handleStarsChange}
+          />
+          <HotelTypesFilter
+            selectedHotelTypes={selectedHotelTypes}
+            onChange={handleHotelTypeChange}
+          />
 
-      <label className="text-gray-700 text-sm font-bold w-full md:w-1/2">
-        Password
-        <input
-          type="password"
-          className="border rounded w-full py-1 px-2 font-normal"
-          {...register("password", {
-            required: "This field is required",
-            minLength: {
-              value: 8,
-              message: "Password must be 8 characters",
-            },
-          })}
-        />
-        {errors.password && (
-          <span className="text-red-500">{errors.password.message}</span>
-        )}
-      </label>
-      <span className="flex items-center justify-between">
-        <span className="text-sm">
-          Not Registered?{" "}
-          <Link to="/register" className="underline">
-            Create an Account
-          </Link>
-        </span>
-        <button
-          type="submit"
-          className="bg-blue-600 text-white p-2 font-bold hover:bg-blue-500 text-xl rounded-lg"
-        >
-          Login
-        </button>
-      </span>
-    </form>
+          <FacilitiesFilter
+            selectedFacilities={selectedFacilities}
+            onChange={handleFacilityChange}
+          />
+
+          <PriceFilter
+            selectedPrice={selectedPrice}
+            onChange={(value?: number) => setSelectedPrice(value)}
+          />
+        </div>
+      </div>
+      <div className="flex flex-col gap-5">
+        <div className="flex justify-between items-center">
+          <span className="text-xl font-bold">
+            {hotelData?.pagination.total} Hotels found
+            {search.destination ? ` in ${search.destination}` : ""}
+          </span>
+          <select
+            name=""
+            id=""
+            value={sortOption}
+            onChange={(event) => setSortOption(event.target.value)}
+            className="p-2 border rounded-md"
+          >
+            <option value="">Sort By</option>
+            <option value="starRating">Star Rating</option>
+            <option value="pricePerNightAsc">
+              Price Per Night (low to high)
+            </option>
+            <option value="pricePerNightDesc">
+              Price Per Night (high to low)
+            </option>
+          </select>
+        </div>
+        {hotelData?.data.map((hotel) => (
+          <SearchResultCard hotel={hotel} />
+        ))}
+        <div>
+          <Pagination
+            page={hotelData?.pagination.page || 1}
+            pages={hotelData?.pagination.pages || 1}
+            onPageChange={(page) => setPage(page)}
+          />
+        </div>
+      </div>
+    </div>
   );
 };
 
-export default SignIn;
+export default Search;

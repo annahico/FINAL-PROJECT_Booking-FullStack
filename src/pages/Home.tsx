@@ -1,30 +1,39 @@
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
+import { useNavigate, useParams } from "react-router-dom";
 import * as apiClient from "../apiClient";
-import LatestDestinationCard from "../components/LastestDestinationCard";
+import { useAppContext } from "../context/AppContext";
+import ManageHotelForm from "../forms/ManageHotelForm/ManageHotelForm";
 
-const Home = () => {
-  const { data: hotels = [] } = useQuery("fetchQuery", apiClient.fetchHotels);
+const EditHotel = () => {
+  const { showToast } = useAppContext();
+  const navigate = useNavigate();
+  const { hotelId } = useParams();
 
-  const [topRowHotels, bottomRowHotels] = [hotels.slice(0, 2), hotels.slice(2)];
+  const { data: hotel } = useQuery(
+    "fetchMyHotelById",
+    () => apiClient.fetchMyHotelById(hotelId || ""),
+    {
+      enabled: !!hotelId,
+    }
+  );
+
+  const { mutate, isLoading } = useMutation(apiClient.updateMyHotelById, {
+    onSuccess: () => {
+      showToast({ message: "Hotel Saved!", type: "SUCCESS" });
+    },
+    onError: () => {
+      showToast({ message: "Error Saving Hotel", type: "ERROR" });
+    },
+  });
+
+  const handleSave = (hotelFormData: FormData) => {
+    mutate(hotelFormData);
+    navigate("/my-hotels");
+  };
 
   return (
-    <div className="space-y-3">
-      <h2 className="text-3xl font-bold">Latest Destinations</h2>
-      <p>Most recent destinations added by our hosts</p>
-      <div className="grid gap-4">
-        <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
-          {topRowHotels.map((hotel) => (
-            <LatestDestinationCard key={hotel._id} hotel={hotel} />
-          ))}
-        </div>
-        <div className="grid md:grid-cols-3 gap-4">
-          {bottomRowHotels.map((hotel) => (
-            <LatestDestinationCard key={hotel._id} hotel={hotel} />
-          ))}
-        </div>
-      </div>
-    </div>
+    <ManageHotelForm hotel={hotel} onSave={handleSave} isLoading={isLoading} />
   );
 };
 
-export default Home;
+export default EditHotel;

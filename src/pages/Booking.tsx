@@ -3,28 +3,38 @@ import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import * as apiClient from "../apiClient";
-import BookingDetailsSummary from "../components/BookingDetailsSummary";
+import BookingDetailSummary from "../components/BookingDetailsSummary";
 import { useAppContext } from "../context/AppContext";
 import { useSearchContext } from "../context/SearchContext";
-import BookingForm from "../forms/BookingForm/BookingForm";
+import BookingForm from "../forms/BookingForm";
 
 const Booking = () => {
   const { stripePromise } = useAppContext();
   const search = useSearchContext();
   const { hotelId } = useParams();
+  const { data: hotel } = useQuery(
+    "fetchHotelByID",
+    () => apiClient.fetchHotelById(hotelId as string),
+    {
+      enabled: !!hotelId,
+    }
+  );
 
   const [numberOfNights, setNumberOfNights] = useState<number>(0);
-
   useEffect(() => {
     if (search.checkIn && search.checkOut) {
-      const differenceInTime = Math.abs(
-        search.checkOut.getTime() - search.checkIn.getTime()
-      );
-      const nights = differenceInTime / (1000 * 60 * 60 * 24);
+      const nights =
+        Math.abs(search.checkOut.getTime() - search.checkIn.getTime()) /
+        (1000 * 60 * 60 * 24);
 
       setNumberOfNights(Math.ceil(nights));
     }
   }, [search.checkIn, search.checkOut]);
+
+  const { data: currentUser } = useQuery(
+    "fetchCurrentUser",
+    apiClient.fetchCurrentUser
+  );
 
   const { data: paymentIntentData } = useQuery(
     "createPaymentIntent",
@@ -34,30 +44,17 @@ const Booking = () => {
         numberOfNights.toString()
       ),
     {
-      enabled: Boolean(hotelId) && numberOfNights > 0,
+      enabled: !!hotelId && numberOfNights > 0,
     }
-  );
-
-  const { data: hotel } = useQuery(
-    "fetchHotelByID",
-    () => apiClient.fetchHotelById(hotelId as string),
-    {
-      enabled: Boolean(hotelId),
-    }
-  );
-
-  const { data: currentUser } = useQuery(
-    "fetchCurrentUser",
-    apiClient.fetchCurrentUser
   );
 
   if (!hotel) {
-    return null;
+    return <></>;
   }
 
   return (
-    <div className="grid md:grid-cols-[1fr_2fr]">
-      <BookingDetailsSummary
+    <div className="grid gap-4 md:grid-cols-[1fr_2fr]">
+      <BookingDetailSummary
         checkIn={search.checkIn}
         checkOut={search.checkOut}
         adultCount={search.adultCount}

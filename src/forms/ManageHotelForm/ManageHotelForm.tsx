@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { HotelType } from "../../../../backend/src/shared/types";
+import { HotelType } from "../../apiClient";
 import DetailsSection from "./DetailsSection";
 import FacilitiesSection from "./FacilitiesSection";
 import GuestsSection from "./GuestsSection";
@@ -37,12 +37,11 @@ const ManageHotelForm = ({ onSave, isLoading, hotel }: Props) => {
   }, [hotel, reset]);
 
   const onSubmit = handleSubmit((formDataJson: HotelFormData) => {
+    // create new formData object & call our api
     const formData = new FormData();
-
     if (hotel) {
       formData.append("hotelId", hotel._id);
     }
-
     formData.append("name", formDataJson.name);
     formData.append("city", formDataJson.city);
     formData.append("country", formDataJson.country);
@@ -57,17 +56,19 @@ const ManageHotelForm = ({ onSave, isLoading, hotel }: Props) => {
       formData.append(`facilities[${index}]`, facility);
     });
 
-    formDataJson.imageUrls.forEach((url, index) => {
-      formData.append(`imageUrls[${index}]`, url);
-    });
+    // this piece of code contain the updated path of url in array whether it is deleted or added new images
+    if (formDataJson.imageUrls) {
+      formDataJson.imageUrls.forEach((url, index) => {
+        formData.append(`imageUrls[${index}]`, url);
+      });
+    }
 
     Array.from(formDataJson.imageFiles).forEach((imageFile) => {
-      formData.append("imageFiles", imageFile);
+      formData.append(`imageFiles`, imageFile);
     });
 
     onSave(formData);
   });
-
   return (
     <FormProvider {...formMethods}>
       <form className="flex flex-col gap-10" onSubmit={onSubmit}>
@@ -76,15 +77,15 @@ const ManageHotelForm = ({ onSave, isLoading, hotel }: Props) => {
         <FacilitiesSection />
         <GuestsSection />
         <ImagesSection />
-        <div className="flex justify-end">
+        <span className="flex justify-end">
           <button
-            type="submit"
             disabled={isLoading}
+            type="submit"
             className="bg-blue-600 text-white p-2 font-bold hover:bg-blue-500 text-xl disabled:bg-gray-500"
           >
             {isLoading ? "Saving..." : "Save"}
           </button>
-        </div>
+        </span>
       </form>
     </FormProvider>
   );

@@ -1,9 +1,8 @@
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as apiClient from "../apiClient";
 import { useAppContext } from "../context/AppContext";
-
 export type RegisterFormData = {
   firstName: string;
   lastName: string;
@@ -16,12 +15,11 @@ const Register = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { showToast } = useAppContext();
-
   const {
     register,
     watch,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }, // we get formState from useForm and error is destructure form formState.
   } = useForm<RegisterFormData>();
 
   const mutation = useMutation(apiClient.register, {
@@ -30,6 +28,7 @@ const Register = () => {
       await queryClient.invalidateQueries("validateToken");
       navigate("/");
     },
+
     onError: (error: Error) => {
       showToast({ message: error.message, type: "ERROR" });
     },
@@ -38,10 +37,9 @@ const Register = () => {
   const onSubmit = handleSubmit((data) => {
     mutation.mutate(data);
   });
-
   return (
     <form className="flex flex-col gap-5" onSubmit={onSubmit}>
-      <h2 className="text-3xl font-bold">Create an Account</h2>
+      <h2 className="text-3xl font-bold">Create An Account</h2>
       <div className="flex flex-col md:flex-row gap-5">
         <label className="text-gray-700 text-sm font-bold flex-1">
           First Name
@@ -53,6 +51,7 @@ const Register = () => {
             <span className="text-red-500">{errors.firstName.message}</span>
           )}
         </label>
+
         <label className="text-gray-700 text-sm font-bold flex-1">
           Last Name
           <input
@@ -64,7 +63,7 @@ const Register = () => {
           )}
         </label>
       </div>
-      <label className="text-gray-700 text-sm font-bold flex-1">
+      <label className="text-gray-700 text-sm font-bold w-full md:w-1/2">
         Email
         <input
           type="email"
@@ -75,7 +74,8 @@ const Register = () => {
           <span className="text-red-500">{errors.email.message}</span>
         )}
       </label>
-      <label className="text-gray-700 text-sm font-bold flex-1">
+
+      <label className="text-gray-700 text-sm font-bold w-full md:w-1/2">
         Password
         <input
           type="password"
@@ -83,8 +83,8 @@ const Register = () => {
           {...register("password", {
             required: "This field is required",
             minLength: {
-              value: 6,
-              message: "Password must be at least 6 characters",
+              value: 8,
+              message: "Password must be 8 characters",
             },
           })}
         />
@@ -92,7 +92,8 @@ const Register = () => {
           <span className="text-red-500">{errors.password.message}</span>
         )}
       </label>
-      <label className="text-gray-700 text-sm font-bold flex-1">
+
+      <label className="text-gray-700 text-sm font-bold w-full md:w-1/2">
         Confirm Password
         <input
           type="password"
@@ -111,10 +112,17 @@ const Register = () => {
           <span className="text-red-500">{errors.confirmPassword.message}</span>
         )}
       </label>
-      <span>
+
+      <span className="flex items-center justify-between">
+        <span>
+          Already have an Account?{" "}
+          <Link to="/sign-in" className="underline">
+            Sign In
+          </Link>{" "}
+        </span>
         <button
           type="submit"
-          className="bg-blue-600 text-white p-2 font-bold hover:bg-blue-500 text-xl"
+          className="bg-blue-600 text-white p-2 font-bold hover:bg-blue-500 text-xl rounded-lg"
         >
           Create Account
         </button>
