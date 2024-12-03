@@ -1,57 +1,56 @@
-import { HotelType } from "../../../backend/src/shared/types";
+import { loadStripe, Stripe } from "@stripe/stripe-js";
+import React, { useContext, useState } from "react";
+import { useQuery } from "react-query";
+import * as apiClient from "../apiClient";
+import Toast from "../components/Toast";
 
-type Props = {
-  checkIn: Date;
-  checkOut: Date;
-  adultCount: number;
-  childCount: number;
-  numberOfNights: number;
-  hotel: HotelType;
+const STRIPE_PUB_KEY = import.meta.env.VITE_STRIPE_PUB_KEY || "";
+
+type ToastMessage = {
+  message: string;
+  type: "SUCCESS" | "ERROR";
+};
+type AppContext = {
+  showToast: (toastMessage: ToastMessage) => void;
+  isLoggedIn: boolean;
+  stripePromise: Promise<Stripe | null>;
 };
 
-const BookingDetailsSummary = ({
-  checkIn,
-  checkOut,
-  adultCount,
-  childCount,
-  numberOfNights,
-  hotel,
-}: Props) => {
+const AppContext = React.createContext<AppContext | undefined>(undefined);
+const stripePromise = loadStripe(STRIPE_PUB_KEY);
+
+export const AppContextProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const [toast, setToast] = useState<ToastMessage | undefined>(undefined);
+  const { isError } = useQuery("validateToken", apiClient.validateToken, {
+    retry: false,
+  });
   return (
-    <div className="grid gap-4 rounded-lg border border-slate-300 p-5 h-fit">
-      <h2 className="text-xl font-bold">Your Booking Details</h2>
-
-      <div className="border-b py-2">
-        <div>Location:</div>
-        <div className="font-bold">
-          {`${hotel.name}, ${hotel.city}, ${hotel.country}`}
-        </div>
-      </div>
-
-      <div className="flex justify-between">
-        <div>
-          Check-in
-          <div className="font-bold">{checkIn.toDateString()}</div>
-        </div>
-        <div>
-          Check-out
-          <div className="font-bold">{checkOut.toDateString()}</div>
-        </div>
-      </div>
-
-      <div className="border-t border-b py-2">
-        <div>Total length of stay:</div>
-        <div className="font-bold">{numberOfNights} Nights</div>
-      </div>
-
-      <div>
-        Guests
-        <div className="font-bold">
-          {adultCount} Adults & {childCount} Children
-        </div>
-      </div>
-    </div>
+    <AppContext.Provider
+      value={{
+        showToast: (toastMessage) => {
+          setToast(toastMessage);
+        },
+        isLoggedIn: !isError,
+        stripePromise,
+      }}
+    >
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(undefined)}
+        />
+      )}
+      {children}
+    </AppContext.Provider>
   );
 };
 
-export default BookingDetailsSummary;
+export const useAppContext = () => {
+  const context = useContext(AppContext);
+  return context as AppContext;
+};

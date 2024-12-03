@@ -7,7 +7,7 @@ import {
   PaymentIntentResponse,
   UserType,
 } from "../../../../backend/src/shared/types";
-import * as apiClient from "../../api-client";
+import * as apiClient from "../../apiClient";
 import { useAppContext } from "../../context/AppContext";
 import { useSearchContext } from "../../context/SearchContext";
 

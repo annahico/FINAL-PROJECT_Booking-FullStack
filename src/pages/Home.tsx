@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import * as apiClient from "../api-client";
+import * as apiClient from "../apiClient";
 import LatestDestinationCard from "../components/LastestDestinationCard";
 
 const Home = () => {

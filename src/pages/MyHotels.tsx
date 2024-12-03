@@ -1,8 +1,8 @@
+import { BiHotel, BiMoney, BiStar } from "react-icons/bi";
+import { BsBuilding, BsMap } from "react-icons/bs";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
-import * as apiClient from "../api-client";
-import { BsBuilding, BsMap } from "react-icons/bs";
-import { BiHotel, BiMoney, BiStar } from "react-icons/bi";
+import * as apiClient from "../apiClient";
 
 const MyHotels = () => {
   const { data: hotelData } = useQuery(

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
-import * as apiClient from "../api-client";
+import * as apiClient from "../apiClient";
 import FacilitiesFilter from "../components/FacilitiesFilter";
 import HotelTypesFilter from "../components/HotelTypesFilter";
 import Pagination from "../components/Pagination";

@@ -2,7 +2,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
-import * as apiClient from "../api-client";
+import * as apiClient from "../apiClient";
 import BookingDetailsSummary from "../components/BookingDetailsSummary";
 import { useAppContext } from "../context/AppContext";
 import { useSearchContext } from "../context/SearchContext";

@@ -1,9 +1,4 @@
-import {
-  Navigate,
-  Route,
-  BrowserRouter as Router,
-  Routes,
-} from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { useAppContext } from "./context/AppContext";
 import Layout from "./layouts/Layout";
 import AddHotel from "./pages/AddHotel";
@@ -38,6 +33,7 @@ const App = () => {
             </Layout>
           }
         />
+
         <Route
           path="/detail/:hotelId"
           element={
@@ -46,6 +42,7 @@ const App = () => {
             </Layout>
           }
         />
+
         <Route
           path="/register"
           element={
@@ -54,6 +51,7 @@ const App = () => {
             </Layout>
           }
         />
+
         <Route
           path="/sign-in"
           element={
@@ -62,7 +60,6 @@ const App = () => {
             </Layout>
           }
         />
-
         {isLoggedIn && (
           <>
             <Route
@@ -73,7 +70,6 @@ const App = () => {
                 </Layout>
               }
             />
-
             <Route
               path="/add-hotel"
               element={
@@ -82,14 +78,7 @@ const App = () => {
                 </Layout>
               }
             />
-            <Route
-              path="/edit-hotel/:hotelId"
-              element={
-                <Layout>
-                  <EditHotel />
-                </Layout>
-              }
-            />
+
             <Route
               path="/my-hotels"
               element={
@@ -98,6 +87,7 @@ const App = () => {
                 </Layout>
               }
             />
+
             <Route
               path="/my-bookings"
               element={
@@ -106,9 +96,17 @@ const App = () => {
                 </Layout>
               }
             />
+
+            <Route
+              path="/edit/hotel/:hotelId"
+              element={
+                <Layout>
+                  <EditHotel />
+                </Layout>
+              }
+            />
           </>
         )}
-        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );

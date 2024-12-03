@@ -1,34 +1,32 @@
 import { useMutation, useQueryClient } from "react-query";
-import * as apiClient from "../api-client";
+import { useNavigate } from "react-router-dom";
+import * as apiClient from "../apiClient";
 import { useAppContext } from "../context/AppContext";
 
 const SignOutButton = () => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { showToast } = useAppContext();
-
-  // Configura la mutación para el cierre de sesión
   const mutation = useMutation(apiClient.signOut, {
     onSuccess: async () => {
-      // Invalidar la consulta de validación del token después de cerrar sesión
       await queryClient.invalidateQueries("validateToken");
-      // Mostrar mensaje de éxito
+      // show toat
       showToast({ message: "Signed Out!", type: "SUCCESS" });
     },
     onError: (error: Error) => {
-      // Mostrar mensaje de error si ocurre un problema
+      // show toast
       showToast({ message: error.message, type: "ERROR" });
     },
   });
 
-  // Manejar el clic en el botón de cerrar sesión
   const handleClick = () => {
     mutation.mutate();
+    navigate("/");
   };
-
   return (
     <button
       onClick={handleClick}
-      className="text-blue-600 px-3 font-bold bg-white hover:bg-gray-100"
+      className="text-blue-600 px-3 font-bold bg-white hover:bg-gray-400 rounded-lg"
     >
       Sign Out
     </button>
